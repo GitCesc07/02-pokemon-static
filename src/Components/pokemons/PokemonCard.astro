@@ -1,0 +1,16 @@
+---
+import type { Result } from "../../interface/pokemonData";
+
+const { name, url } = Astro.props as Result;
+
+const id = url.split("/").at(-2);
+const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+---
+
+<a
+  href={`/pokemons/${name}`}
+  class="border border-gray-400/55 rounded-md shadow-md shadow-gray-600 hover:shadow-gray-400 flex items-center justify-center flex-col transition-all duration-500 ease-out hover:scale-110 p-2 mt-4"
+>
+  <img src={imgSrc} alt={name} />
+  <span class="capitalize">{name}</span>
+</a>
