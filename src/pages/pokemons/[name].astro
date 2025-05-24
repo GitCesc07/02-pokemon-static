@@ -1,16 +1,51 @@
 ---
 import type { GetStaticPaths } from "astro";
 import Mainlayout from "../../layout/MainLayout.astro";
+import PokemonCard from "../../Components/pokemons/PokemonCard.astro";
+import type { PokemonListData } from "../../interface/pokemonData";
 
-export const getStaticPaths = (() => {    
-    return [
-        {params: {name: "charizard"}},
-        {params: {name: "bulbasaur"}},
-        {params: {name: "charmander"}}
-    ];
+export const getStaticPaths = (async() => {
+
+    const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+    const { results } = await resp.json() as PokemonListData;
+
+    return results.map(({name, url}) => ({
+         params: { name: name},
+        props: { name: name, url: url}
+    }))    
+
+//   return [
+//     ...results.map((pokemon) => ({
+//         params: { name: pokemon.name},
+//         props: { name: pokemon.name, url: pokemon.url}
+//     }))
+//   ];
 }) satisfies GetStaticPaths;
+
+const { name } = Astro.params;
+const { url } = Astro.props;
+
+const id = url.split("/").at(-2);
+const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
 ---
 
 <Mainlayout title="Pokemons">
-    <h1>Pokemon</h1>
+  <section class="mt-10 mx-10 flex flex-col items-center justify-center">
+    <div class="flex flex-col space-y-4">
+      <a
+        href="/"
+        class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all duration-200"
+      >
+        Regresar a Home
+      </a>
+      <h1 class="text-2xl capitalize">{name}</h1>
+    </div>
+
+    <PokemonCard name={name}  url={url} isBig={true} />
+
+    <audio controls class="mt-5">
+        <source src={audioSrc} type="audio/ogg">
+        Tu navegador no soprta el sonido o audio del pokémon...
+    </audio>
+  </section>
 </Mainlayout>
