@@ -1,8 +1,8 @@
 ---
 import type { GetStaticPaths } from "astro";
-import Mainlayout from "../../layout/MainLayout.astro";
-import PokemonCard from "../../Components/pokemons/PokemonCard.astro";
-import type { PokemonListData } from "../../interface/pokemonData";
+import Mainlayout from "@layout/MainLayout.astro";
+import PokemonCard from "@components/pokemons/PokemonCard.astro";
+import type { PokemonListData } from "@interface/pokemonData";
 
 export const getStaticPaths = (async() => {
 
@@ -27,13 +27,18 @@ const { url } = Astro.props;
 
 const id = url.split("/").at(-2);
 const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
+const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 ---
 
-<Mainlayout title="Pokemons">
+<Mainlayout 
+  title={`Pokémon - #${id}-${name}`}
+  decsriptcion={`Información del Pokémon ${name}`}
+  image={imgSrc}
+>
   <section class="mt-10 mx-10 flex flex-col items-center justify-center">
     <div class="flex flex-col space-y-4">
       <a
-        href="/"
+        href="/pokemons/1"
         class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all duration-200"
       >
         Regresar a Home

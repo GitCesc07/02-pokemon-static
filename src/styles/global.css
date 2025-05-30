@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+
+@media (max-width: 360px) { 
+    .grid-col-1 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.disable {
+    cursor: not-allowed;
+    opacity: 0.5;
+}

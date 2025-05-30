@@ -1,8 +1,8 @@
 ---
 import type { GetStaticPaths } from "astro";
-import Mainlayout from "../../layout/MainLayout.astro";
-import type { PokemonListData } from "../../interface/pokemonData";
-import PokemonCard from "../../Components/pokemons/PokemonCard.astro";
+import Mainlayout from "@layout/MainLayout.astro";
+import type { PokemonListData } from "@interface/pokemonData";
+import PokemonCard from "@components/pokemons/PokemonCard.astro";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
@@ -14,8 +14,6 @@ export const getStaticPaths = (async ({ paginate }) => {
 const title = "Pokémon Static | Home Page";
 
 const { page } = Astro.props;
-
-console.log(page.url.prev);
 ---
 
 <Mainlayout title={title}>
@@ -24,15 +22,24 @@ console.log(page.url.prev);
 
   <section
     aria-label="Listado de Pokémones"
-    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4"
+    class="grid grid-col-1 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 2xl:grid-cols-5 gap-4 p-4"
   >
     {page.data.map(({ name, url }) => <PokemonCard name={name} url={url} />)}
   </section>
 
-  <section class="flex items-center justify-end px-10 my-10 gap-4 w-full">
+  <section
+    class="flex items-center flex-col-reverse md:flex-row justify-end px-10 my-10 gap-4 w-full"
+  >
     <div class="flex items-center gap-x-4 flex-1">
       <a
-        class={`px-2 bg-gray-700 shadow shadow-gray-600 rounded-sm flex items-center justify-center ${page.url.first === undefined ? "cursor-not-allowed" : "hover:bg-gray-600 transition-colors duration-150 hover:scale-105"}`}
+        class:list={[
+          "px-2 bg-gray-700 shadow shadow-gray-600 rounded-sm flex items-center justify-center",
+          {
+            "hover:bg-gray-600 transition-colors duration-150 hover:scale-105":
+              page.url.first != undefined,
+            disable: page.url.first === undefined,
+          },
+        ]}
         href={page.url.first}
       >
         <svg
@@ -49,7 +56,14 @@ console.log(page.url.prev);
       </a>
 
       <a
-        class={`bg-gray-700 shadow shadow-gray-600 rounded-sm flex items-center justify-center ${page.url.prev === undefined ? "cursor-not-allowed" : "hover:bg-gray-600 transition-colors duration-150 hover:scale-105"}`}
+        class:list={[
+          "px-2 bg-gray-700 shadow shadow-gray-600 rounded-sm flex items-center justify-center",
+          {
+            "hover:bg-gray-600 transition-colors duration-150 hover:scale-105":
+              page.url.prev != undefined,
+            disable: page.url.prev === undefined,
+          },
+        ]}
         href={page.url.prev}
       >
         <svg
@@ -57,7 +71,7 @@ console.log(page.url.prev);
           width="32"
           height="32"
           viewBox="0 0 24 24"
-          >
+        >
           <path
             fill="#fff"
             d="m10.8 12l3.9 3.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275l-4.6-4.6q-.15-.15-.212-.325T8.425 12t.063-.375t.212-.325l4.6-4.6q.275-.275.7-.275t.7.275t.275.7t-.275.7z"
@@ -66,7 +80,14 @@ console.log(page.url.prev);
       </a>
 
       <a
-        class={`bg-gray-700 shadow shadow-gray-600 rounded-sm flex items-center justify-center ${page.url.next === undefined ? "cursor-not-allowed" : "hover:bg-gray-600 transition-colors duration-150 hover:scale-105"}`}
+        class:list={[
+          "px-2 bg-gray-700 shadow shadow-gray-600 rounded-sm flex items-center justify-center",
+          {
+            "hover:bg-gray-600 transition-colors duration-150 hover:scale-105":
+              page.url.next != undefined,
+            disable: page.url.next === undefined,
+          },
+        ]}
         href={page.url.next}
       >
         <svg
@@ -81,7 +102,14 @@ console.log(page.url.prev);
       </a>
 
       <a
-        class={`bg-gray-700 shadow shadow-gray-600 rounded-sm flex items-center justify-center ${page.url.next === undefined ? "cursor-not-allowed" : "hover:bg-gray-600 transition-colors duration-150 hover:scale-105"}`}
+        class:list={[
+          "px-2 bg-gray-700 shadow shadow-gray-600 rounded-sm flex items-center justify-center",
+          {
+            "hover:bg-gray-600 transition-colors duration-150 hover:scale-105":
+              page.url.last != undefined,
+            disable: page.url.last === undefined,
+          },
+        ]}
         href={page.url.last}
       >
         <svg
@@ -98,9 +126,11 @@ console.log(page.url.prev);
     </div>
 
     <div class="flex items-center justify-end flex-1">
-      <p class="flex items-center justify-center gap-x-1 text-gray-300">
+      <p
+        class="flex items-center justify-center gap-x-1 text-gray-400 font-bold text-xl"
+      >
         Página:
-        <span class="text-white">1</span>
+        <span class="text-white">{page.currentPage}</span>
       </p>
     </div>
   </section>

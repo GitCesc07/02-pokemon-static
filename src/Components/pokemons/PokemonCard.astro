@@ -11,7 +11,7 @@ const id = url.split("/").at(-2);
 const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 ---
 
-<!-- class={`flex items-center justify-center flex-col transition-all duration-500 ease-out hover:scale-110 p-2 mt-4 max-w-40 ${!isBig && "border border-gray-400/55 rounded-md shadow-md shadow-gray-600 hover:shadow-gray-400"}`} -->
+<!-- class={`flex items-center justify-center flex-col transition-all duration-500 ease-out hover:scale-110 p-2 mt-4 max-w-40 ${!isBig && "border border-gray-400/55 rounded-md shadow-md shadow-gray-600 hover:shadow-gray-400"}`} --><!-- href={`/pokemon/${id}`} -->
 <a
   href={`/pokemons/${name}`}
   class:list={[
@@ -27,8 +27,8 @@ const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites
     transition:name={`${name}-image`}
     class:list={[
       {
-        'size-56': isBig,
-        'size-26': !isBig,
+        "size-56": isBig,
+        "size-26": !isBig,
       },
     ]}
     src={imgSrc}
@@ -39,6 +39,7 @@ const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites
       "capitalize",
       {
         "text-3xl text-blue-200": isBig,
+        "text-md": !isBig,
       },
     ]}>#{id} {name}</span
   >
